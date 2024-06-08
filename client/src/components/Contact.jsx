@@ -17,13 +17,12 @@ const Contact = () => {
   };
 
   return (
-    <section className="register-section flex-center" id="contact">
-      <div className="contact-container flex-center contact">
+    <section className="contact_">
+      <div className="contact-container contact">
         <h2 className="form-heading">Contact Us</h2>
         <form
           method="POST"
           action={`https://formspree.io/f/${process.env.REACT_FORMIK_SECRET}`}
-          className="register-form "
         >
           <input
             type="text"
