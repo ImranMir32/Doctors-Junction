@@ -6,13 +6,13 @@ const GlobalStateProvider = ({ children }) => {
   // Load data from local storage when the component mounts
   const initialToken = localStorage.getItem("token") || "";
   const initialUser = JSON.parse(localStorage.getItem("user")) || {};
-  const initialContactList =
-    JSON.parse(localStorage.getItem("contactList")) || [];
+  const initialDoctorList =
+    JSON.parse(localStorage.getItem("doctorList")) || [];
   const initialReload = JSON.parse(localStorage.getItem("reload")) || false;
 
   const [token, setToken] = useState(initialToken);
   const [user, setUser] = useState(initialUser);
-  const [contactList, setContactList] = useState(initialContactList);
+  const [doctorList, setDoctorList] = useState(initialDoctorList);
   const [reload, setReload] = useState(initialReload);
 
   // Update local storage whenever state changes
@@ -25,8 +25,8 @@ const GlobalStateProvider = ({ children }) => {
   }, [user]);
 
   useEffect(() => {
-    localStorage.setItem("contactList", JSON.stringify(contactList));
-  }, [contactList]);
+    localStorage.setItem("doctorList", JSON.stringify(doctorList));
+  }, [doctorList]);
 
   useEffect(() => {
     localStorage.setItem("reload", JSON.stringify(reload));
@@ -37,11 +37,11 @@ const GlobalStateProvider = ({ children }) => {
       value={{
         user,
         token,
-        contactList,
+        doctorList,
         reload,
         setUser,
         setToken,
-        setContactList,
+        setDoctorList,
         setReload,
       }}
     >

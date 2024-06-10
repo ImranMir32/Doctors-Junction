@@ -1,18 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/register.css";
-import axios from "axios";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { setUserInfo } from "../redux/rootSlice";
-import jwt_decode from "jwt-decode";
-import fetchData from "../helper/apiCall";
 import logo from "../assets/images/logo.png";
 
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
+import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
 
 function Login() {
-  const dispatch = useDispatch();
+  const { Login } = useContext(GlobalMethodsContext);
+
   const [formDetails, setFormDetails] = useState({
     email: "",
     password: "",
@@ -36,32 +32,20 @@ function Login() {
       } else if (password.length < 5) {
         return toast.error("Password must be at least 5 characters long");
       }
-
-      const { data } = await toast.promise(
-        axios.post("/user/login", {
-          email,
-          password,
-        }),
-        {
-          pending: "Logging in...",
-          success: "Login successfully",
-          error: "Unable to login user",
-          loading: "Logging user...",
-        }
-      );
-      localStorage.setItem("token", data.token);
-      dispatch(setUserInfo(jwt_decode(data.token).userId));
-      getUser(jwt_decode(data.token).userId);
-    } catch (error) {
-      return error;
-    }
-  };
-
-  const getUser = async (id) => {
-    try {
-      const temp = await fetchData(`/user/getuser/${id}`);
-      dispatch(setUserInfo(temp));
-      return navigate("/");
+      const values = {
+        email,
+        password,
+      };
+      const res = await Login(values);
+      if (res.status === 200) {
+        localStorage.setItem("token", res.data.access_token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        navigate("/home");
+      } else {
+        toast.error("Wrong email or password !", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     } catch (error) {
       return error;
     }

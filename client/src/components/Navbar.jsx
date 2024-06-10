@@ -1,28 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/navbar.css";
 import { HashLink } from "react-router-hash-link";
-import { useDispatch } from "react-redux";
-import { setUserInfo } from "../redux/rootSlice";
 import { FiMenu } from "react-icons/fi";
 import { RxCross1 } from "react-icons/rx";
-import jwt_decode from "jwt-decode";
 
 import logo from "../assets/images/logo.png";
 
+import { GlobalStateContext } from "../Context/Global_Context";
+// import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
+
 const Navbar = () => {
   const [iconActive, setIconActive] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const [user, setUser] = useState(
-    localStorage.getItem("token")
-      ? jwt_decode(localStorage.getItem("token"))
-      : ""
-  );
+
+  const { user, setUser, token, setToken } = useContext(GlobalStateContext);
+  // const { clearAllData, deleteContact } = useContext(GlobalMethodsContext);
 
   const logoutFunc = () => {
-    dispatch(setUserInfo({}));
+    // dispatch(setUser({}));
     localStorage.removeItem("token");
     navigate("/login");
   };

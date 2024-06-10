@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/register.css";
-import axios from "axios";
 import toast from "react-hot-toast";
 import logo from "../assets/images/logo.png";
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
+
+import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
 
 function Register() {
+  const { Register } = useContext(GlobalMethodsContext);
+
   const [file, setFile] = useState("");
   const [loading, setLoading] = useState(false);
   const [formDetails, setFormDetails] = useState({
@@ -26,22 +28,9 @@ function Register() {
   };
 
   const onUpload = async (element) => {
-    setLoading(true);
     if (element.type === "image/jpeg" || element.type === "image/png") {
       const data = new FormData();
-      data.append("file", element);
-      data.append("upload_preset", process.env.REACT_APP_CLOUDINARY_PRESET);
-      data.append("cloud_name", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME);
-      fetch(process.env.REACT_APP_CLOUDINARY_BASE_URL, {
-        method: "POST",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => setFile(data.url.toString()));
-      setLoading(false);
-    } else {
-      setLoading(false);
-      toast.error("Please select an image in jpeg or png format");
+      setFile(data);
     }
   };
 
@@ -49,7 +38,6 @@ function Register() {
     try {
       e.preventDefault();
 
-      if (loading) return;
       if (file === "") return;
 
       const { fullname, email, password, confpassword } = formDetails;
@@ -63,22 +51,34 @@ function Register() {
         return toast.error("Passwords do not match");
       }
 
-      await toast.promise(
-        axios.post("/user/register", {
-          fullname,
-          email,
-          password,
-          pic: file,
-        }),
-        {
-          pending: "Registering user...",
-          success: "User registered successfully",
-          error: "Unable to register user",
-          loading: "Registering user...",
-        }
-      );
-      return navigate("/login");
-    } catch (error) {}
+      const values = {
+        name: fullname,
+        email,
+        password,
+        imageUrl: file,
+      };
+      setLoading(true);
+      const res = await Register(values);
+      setLoading(false);
+      if (res.status === 201) {
+        toast.success(`${res.data}`, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setTimeout(() => {
+          navigate("/logon");
+        }, 2000);
+      } else if (res.status === 400) {
+        toast.warning(`${res.data}`, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        toast.warning(`Network response was not ok`, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } catch (error) {
+      toast.error(error);
+    }
   };
 
   return (
