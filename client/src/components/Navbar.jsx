@@ -8,19 +8,18 @@ import { RxCross1 } from "react-icons/rx";
 import logo from "../assets/images/logo.png";
 
 import { GlobalStateContext } from "../Context/Global_Context";
-// import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
+import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
 
 const Navbar = () => {
   const [iconActive, setIconActive] = useState(false);
   const navigate = useNavigate();
 
-  const { user, setUser, token, setToken } = useContext(GlobalStateContext);
-  // const { clearAllData, deleteContact } = useContext(GlobalMethodsContext);
+  const { user, token } = useContext(GlobalStateContext);
+  const { clearAllData } = useContext(GlobalMethodsContext);
 
-  const logoutFunc = () => {
-    // dispatch(setUser({}));
-    localStorage.removeItem("token");
-    navigate("/login");
+  const logoutFunc = async () => {
+    await clearAllData();
+    navigate("/");
   };
 
   return (

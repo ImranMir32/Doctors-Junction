@@ -40,11 +40,9 @@ function Login() {
       if (res.status === 200) {
         localStorage.setItem("token", res.data.access_token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
-        navigate("/home");
+        navigate("/");
       } else {
-        toast.error("Wrong email or password !", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        toast.error("Wrong email or password !");
       }
     } catch (error) {
       return error;

@@ -13,6 +13,6 @@ app.use(express.urlencoded({ extended: false })); // To parse URL-encoded bodies
 app.use(cookieParser());
 
 // Routes
-app.use("/user", userRoutes);
+app.use("/api/user", userRoutes);
 
 module.exports = app;

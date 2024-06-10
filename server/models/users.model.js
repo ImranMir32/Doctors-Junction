@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const { createTokenForUser } = require("../services/authentication");
 
 const { createHmac, randomBytes } = require("crypto");
-const { Int32 } = require("mongodb");
 
 const usersSchema = mongoose.Schema(
   {
@@ -27,6 +26,10 @@ const usersSchema = mongoose.Schema(
     phone: { type: String, default: "" },
     age: { type: String, default: "" },
     address: { type: String, default: "" },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
     salt: {
       type: String,
     },

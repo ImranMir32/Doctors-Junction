@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const { userSignup, userSignin } = require("../controllers/usersControllers");
+const { userRegister, userLogin } = require("../controllers/usersControllers");
 // const uploadSignin = multer().none(); when using form-data
 
 const router = express.Router();
@@ -17,9 +17,9 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// router.post("/signin",userSignin, userSignin); when using form-data
+// router.post("/signin",userSignin, userRegister); when using form-data
 router
-  .post("/signup", upload.single("image"), userSignup)
-  .post("/signin", userSignin);
+  .post("/register", upload.single("image"), userRegister)
+  .post("/login", userLogin);
 
 module.exports = router;

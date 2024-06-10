@@ -9,7 +9,7 @@ import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
 function Register() {
   const { Register } = useContext(GlobalMethodsContext);
 
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState(null); // Initialize file state with null
   const [loading, setLoading] = useState(false);
   const [formDetails, setFormDetails] = useState({
     fullname: "",
@@ -21,7 +21,7 @@ function Register() {
 
   const inputChange = (e) => {
     const { name, value } = e.target;
-    return setFormDetails({
+    setFormDetails({
       ...formDetails,
       [name]: value,
     });
@@ -29,8 +29,9 @@ function Register() {
 
   const onUpload = async (element) => {
     if (element.type === "image/jpeg" || element.type === "image/png") {
-      const data = new FormData();
-      setFile(data);
+      setFile(element);
+    } else {
+      toast.error("Please select an image in jpeg or png format");
     }
   };
 
@@ -38,7 +39,9 @@ function Register() {
     try {
       e.preventDefault();
 
-      if (file === "") return;
+      if (!file) {
+        return toast.error("Please upload an image");
+      }
 
       const { fullname, email, password, confpassword } = formDetails;
       if (!fullname || !email || !password || !confpassword) {
@@ -57,27 +60,24 @@ function Register() {
         password,
         imageUrl: file,
       };
+
       setLoading(true);
       const res = await Register(values);
       setLoading(false);
+
+      // console.log(res.status);
       if (res.status === 201) {
-        toast.success(`${res.data}`, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        toast.success(`${res.data}`);
         setTimeout(() => {
-          navigate("/logon");
-        }, 2000);
+          navigate("/login");
+        }, 1000);
       } else if (res.status === 400) {
-        toast.warning(`${res.data}`, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        toast.warning(`${res.data}`);
       } else {
-        toast.warning(`Network response was not ok`, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        toast.warning(`Network response was not ok`);
       }
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   };
 
@@ -94,7 +94,7 @@ function Register() {
             name="fullname"
             className="form-input"
             placeholder="Enter your full name"
-            value={formDetails.firstname}
+            value={formDetails.fullname}
             onChange={inputChange}
           />
 
@@ -108,11 +108,20 @@ function Register() {
           />
           <input
             type="file"
-            onChange={(e) => onUpload(e.target.files[0])}
-            name="profile-pic"
+            onChange={(e) => {
+              const uploadedFile = e.target.files[0];
+              if (uploadedFile) {
+                onUpload(uploadedFile);
+              } else {
+                // Handle the case where no file is selected
+                toast.error("Please select a file");
+              }
+            }}
+            name="image" // Change this to "image"
             id="profile-pic"
             className="form-input"
           />
+
           <input
             type="password"
             name="password"

@@ -2,7 +2,7 @@ const Users = require("../models/users.model");
 const cloudinary = require("../config/cloudinaryConfig");
 const fs = require("fs");
 
-const userSignup = async (req, res) => {
+const userRegister = async (req, res) => {
   console.log(req.body);
   try {
     const { name, email, password } = req.body;
@@ -36,7 +36,7 @@ const userSignup = async (req, res) => {
   }
 };
 
-const userSignin = async (req, res) => {
+const userLogin = async (req, res) => {
   console.log(req.body);
   const { email, password } = req.body;
   if (!email || !password) {
@@ -60,6 +60,6 @@ const userSignin = async (req, res) => {
 };
 
 module.exports = {
-  userSignin,
-  userSignup,
+  userLogin,
+  userRegister,
 };

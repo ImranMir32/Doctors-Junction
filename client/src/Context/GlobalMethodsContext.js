@@ -32,16 +32,17 @@ const GlobalMethodsProvider = ({ children }) => {
 
   const Login = async (values) => {
     try {
-      const url = "https://localhost:4000/api/user/login";
+      const url = "http://localhost:4000/api/user/login";
       const response = await axios({
         method: "POST",
         url,
         data: values,
       });
 
+      console.log(response);
       setToken(response.data.access_token);
       setUser(response.data.user);
-      const params = response.data.access_token;
+      // const params = response.data.access_token;
       // await getAllContacts(params);
       return response;
     } catch (error) {
@@ -51,14 +52,21 @@ const GlobalMethodsProvider = ({ children }) => {
 
   const Register = async (values) => {
     try {
-      const url = "https://contacthub-backend.onrender.com/api/user/register";
+      const url = "http://localhost:4000/api/user/register";
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      formData.append("image", values.imageUrl); // Change this to 'image'
+
       const response = await axios({
         method: "POST",
         url,
-        data: values,
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
         validateStatus: (status) => {
-          // Return true if the status is within the 2xx range (successful)
-          // Return false if you want to treat certain status codes as errors
           return status >= 200 && status <= 400; // Customize this condition as needed
         },
       });
@@ -190,16 +198,15 @@ const GlobalMethodsProvider = ({ children }) => {
   //   }
   // };
 
-  // const clearAllData = () => {
-  //   setToken("");
-  //   setUser("");
-  //   setContactList("");
-  // };
+  const clearAllData = () => {
+    setToken("");
+    setUser("");
+  };
 
   return (
     <GlobalMethodsContext.Provider
       value={{
-        // clearAllData,
+        clearAllData,
         Login,
         Register,
         // updateUser,
