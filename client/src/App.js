@@ -12,7 +12,7 @@ import { GlobalStateProvider } from "./Context/Global_Context";
 import { GlobalMethodsProvider } from "./Context/GlobalMethodsContext";
 
 const Home = lazy(() => import("./routes/Home"));
-// const Profile = lazy(() => import("./routes/Profile"));
+const Profile = lazy(() => import("./routes/Profile"));
 
 const router = createBrowserRouter([
   {
@@ -30,11 +30,11 @@ const router = createBrowserRouter([
     element: <Login />,
     errorElement: <ErrorPage />,
   },
-  // {
-  //   path: "/profile",
-  //   element: <Profile />,
-  //   errorElement: <ErrorPage />,
-  // },
+  {
+    path: "/profile",
+    element: <Profile />,
+    errorElement: <ErrorPage />,
+  },
 ]);
 
 function App() {

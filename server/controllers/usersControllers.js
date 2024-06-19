@@ -59,7 +59,33 @@ const userLogin = async (req, res) => {
   }
 };
 
+const updateUserInfo = async (req, res) => {
+  console.log(req.params);
+  try {
+    const user = await Users.findById(req.params.id);
+    const { name, email, gender, phone, age, address, password } = req.body;
+    if (user) {
+      const isMatched = await Users.isPasswordMatched(email, password);
+      if (isMatched) {
+        user.name = name;
+        user.email = email;
+        user.gender = gender;
+        user.phone = phone;
+        user.age = age;
+        user.address = address;
+        await user.save();
+        res.status(200).json(user);
+      } else {
+        res.status(401).json("Authetication failed!");
+      }
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   userLogin,
   userRegister,
+  updateUserInfo,
 };

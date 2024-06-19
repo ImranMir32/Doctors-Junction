@@ -77,31 +77,31 @@ const GlobalMethodsProvider = ({ children }) => {
     }
   };
 
-  // const updateUser = async (values) => {
-  //   try {
-  //     const url = `https://contacthub-backend.onrender.com/api/user/${user._id}`;
-  //     const response = await axios({
-  //       method: "PUT",
-  //       url,
-  //       data: values,
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       validateStatus: (status) => {
-  //         // Return true if the status is within the 2xx range (successful)
-  //         // Return false if you want to treat certain status codes as errors
-  //         return status >= 200 && status <= 401; // Customize this condition as needed
-  //       },
-  //     });
+  const updateUserInfo = async (values) => {
+    try {
+      const url = `http://localhost:4000/api/user/${user._id}`;
+      const response = await axios({
+        method: "PUT",
+        url,
+        data: values,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => {
+          // Return true if the status is within the 2xx range (successful)
+          // Return false if you want to treat certain status codes as errors
+          return status >= 200 && status <= 401; // Customize this condition as needed
+        },
+      });
 
-  //     if (response.status === 200) setUser(response.data);
+      if (response.status === 200) setUser(response.data);
 
-  //     return response;
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     return 500;
-  //   }
-  // };
+      return response;
+    } catch (error) {
+      console.log(error.message);
+      return 500;
+    }
+  };
 
   // const getAllContacts = async (params) => {
   //   try {
@@ -209,6 +209,7 @@ const GlobalMethodsProvider = ({ children }) => {
         clearAllData,
         Login,
         Register,
+        updateUserInfo,
         // updateUser,
         // addContact,
         // updateContact,

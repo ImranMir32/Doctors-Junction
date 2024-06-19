@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/navbar.css";
-import { HashLink } from "react-router-hash-link";
 import { FiMenu } from "react-icons/fi";
 import { RxCross1 } from "react-icons/rx";
 
@@ -53,9 +52,6 @@ const Navbar = () => {
               </li>
               <li>
                 <NavLink to={"/applyfordoctor"}>Apply for doctor</NavLink>
-              </li>
-              <li>
-                <HashLink to={"/#contact"}>Contact Us</HashLink>
               </li>
               <li>
                 <NavLink to={"/profile"}>Profile</NavLink>
