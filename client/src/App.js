@@ -13,6 +13,8 @@ import { GlobalMethodsProvider } from "./Context/GlobalMethodsContext";
 
 const Home = lazy(() => import("./routes/Home"));
 const Profile = lazy(() => import("./routes/Profile"));
+const Doctors = lazy(() => import("./routes/Doctors"));
+const ApplyDoctors = lazy(() => import("./routes/DoctorApply"));
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,16 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/doctors",
+    element: <Doctors />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/apply",
+    element: <ApplyDoctors />,
     errorElement: <ErrorPage />,
   },
 ]);

@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("../middleware/auth");
 const multer = require("multer");
 const path = require("path");
 const {
@@ -25,6 +26,6 @@ const upload = multer({ storage: storage });
 router
   .post("/register", upload.single("image"), userRegister)
   .post("/login", userLogin)
-  .put("/:id", updateUserInfo);
+  .put("/:id", auth, updateUserInfo);
 
 module.exports = router;

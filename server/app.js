@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
+const doctorsRoutes = require("./routes/doctorsRoutes");
 
 const app = express();
 
@@ -14,5 +15,6 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/user", userRoutes);
+app.use("/api/doctor", doctorsRoutes);
 
 module.exports = app;

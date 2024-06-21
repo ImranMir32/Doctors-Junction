@@ -51,7 +51,7 @@ const Navbar = () => {
                 <NavLink to={"/notifications"}>Notifications</NavLink>
               </li>
               <li>
-                <NavLink to={"/applyfordoctor"}>Apply for doctor</NavLink>
+                <NavLink to={"/apply"}>Apply for doctor</NavLink>
               </li>
               <li>
                 <NavLink to={"/profile"}>Profile</NavLink>

@@ -26,6 +26,10 @@ const usersSchema = mongoose.Schema(
     phone: { type: String, default: "" },
     age: { type: String, default: "" },
     address: { type: String, default: "" },
+    isDoctor: {
+      type: Boolean,
+      default: false,
+    },
     isAdmin: {
       type: Boolean,
       default: false,

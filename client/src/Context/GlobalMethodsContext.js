@@ -103,6 +103,27 @@ const GlobalMethodsProvider = ({ children }) => {
     }
   };
 
+  const applyAsDoctor = async (formDetails) => {
+    try {
+      const url = "http://localhost:4000/api/doctor/apply";
+      const response = await axios({
+        method: "POST",
+        url,
+        data: formDetails,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log(response);
+      // const params = response.data.access_token;
+      // await getAllContacts(params);
+      return response;
+    } catch (error) {
+      return 401;
+    }
+  };
+
   // const getAllContacts = async (params) => {
   //   try {
   //     const url = `https://contacthub-backend.onrender.com/api/contacts`;
@@ -210,6 +231,7 @@ const GlobalMethodsProvider = ({ children }) => {
         Login,
         Register,
         updateUserInfo,
+        applyAsDoctor,
         // updateUser,
         // addContact,
         // updateContact,
