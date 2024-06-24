@@ -39,7 +39,7 @@ const Navbar = () => {
           </li>
           {token && user.isAdmin && (
             <li>
-              <NavLink to={"/dashboard/users"}>Dashboard</NavLink>
+              <NavLink to={"/dashboard"}>Dashboard</NavLink>
             </li>
           )}
           {token && !user.isAdmin && (

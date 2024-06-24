@@ -9,11 +9,16 @@ const GlobalStateProvider = ({ children }) => {
   const initialDoctorList =
     JSON.parse(localStorage.getItem("doctorList")) || [];
   const initialReload = JSON.parse(localStorage.getItem("reload")) || false;
+  const initialApplicationList =
+    JSON.parse(localStorage.getItem("applicationList")) || [];
 
   const [token, setToken] = useState(initialToken);
   const [user, setUser] = useState(initialUser);
   const [doctorList, setDoctorList] = useState(initialDoctorList);
   const [reload, setReload] = useState(initialReload);
+  const [applicationList, setApplicationList] = useState(
+    initialApplicationList
+  );
 
   // Update local storage whenever state changes
   useEffect(() => {
@@ -32,6 +37,10 @@ const GlobalStateProvider = ({ children }) => {
     localStorage.setItem("reload", JSON.stringify(reload));
   }, [reload]);
 
+  useEffect(() => {
+    localStorage.setItem("applicationList", JSON.stringify(applicationList));
+  }, [applicationList]);
+
   return (
     <GlobalStateContext.Provider
       value={{
@@ -39,10 +48,12 @@ const GlobalStateProvider = ({ children }) => {
         token,
         doctorList,
         reload,
+        applicationList,
         setUser,
         setToken,
         setDoctorList,
         setReload,
+        setApplicationList,
       }}
     >
       {children}

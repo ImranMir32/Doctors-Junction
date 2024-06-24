@@ -16,6 +16,15 @@ const Profile = lazy(() => import("./routes/Profile"));
 const Doctors = lazy(() => import("./routes/Doctors"));
 const ApplyDoctors = lazy(() => import("./routes/DoctorApply"));
 
+// admin
+const Dashboard = lazy(() => import("./routes/Admin/Dashboard"));
+// const AdminUsers = lazy(() => import("./routes/Admin/adminUsers"));
+// const AdminDoctors = lazy(() => import("./routes/Admin/adminDoctors"));
+const AdminApplicants = lazy(() => import("./routes/Admin/adminApplicants"));
+// const AdminAppointments = lazy(() =>
+//   import("./routes/Admin/adminAppointments")
+// );
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -45,6 +54,33 @@ const router = createBrowserRouter([
   {
     path: "/apply",
     element: <ApplyDoctors />,
+    errorElement: <ErrorPage />,
+  },
+
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    errorElement: <ErrorPage />,
+  },
+
+  // {
+  //   path: "/dashboard/users",
+  //   element: <AdminUsers />,
+  //   errorElement: <ErrorPage />,
+  // },
+  // {
+  //   path: "/dashboard/doctors",
+  //   element: <AdminDoctors />,
+  //   errorElement: <ErrorPage />,
+  // },
+  // {
+  //   path: "/dashboard/appointments",
+  //   element: <AdminAppointments />,
+  //   errorElement: <ErrorPage />,
+  // },
+  {
+    path: "/dashboard/applications",
+    element: <AdminApplicants />,
     errorElement: <ErrorPage />,
   },
 ]);

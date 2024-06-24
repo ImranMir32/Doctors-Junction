@@ -47,19 +47,19 @@ const usersSchema = mongoose.Schema(
   }
 );
 
-// usersSchema.pre("save", function (next) {
-//   const user = this;
-//   if (!user.isModified("password")) return;
+usersSchema.pre("save", function (next) {
+  const user = this;
+  if (!user.isModified("password")) return;
 
-//   const salt = randomBytes(16).toString();
-//   const hashedPassword = createHmac("sha256", salt)
-//     .update(user.password)
-//     .digest("hex");
+  const salt = randomBytes(16).toString();
+  const hashedPassword = createHmac("sha256", salt)
+    .update(user.password)
+    .digest("hex");
 
-//   this.salt = salt;
-//   this.password = hashedPassword;
-//   next();
-// });
+  this.salt = salt;
+  this.password = hashedPassword;
+  next();
+});
 
 usersSchema.static("isPasswordMatched", async function (email, password) {
   const user = await this.findOne({ email });

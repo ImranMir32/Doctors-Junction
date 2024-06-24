@@ -5,7 +5,7 @@ import axios from "axios";
 const GlobalMethodsContext = createContext();
 
 const GlobalMethodsProvider = ({ children }) => {
-  const { user, token, setToken, setUser, setDoctorList } =
+  const { user, token, setToken, setUser, setApplicationList } =
     useContext(GlobalStateContext);
 
   // Load token and user data from local storage
@@ -124,24 +124,25 @@ const GlobalMethodsProvider = ({ children }) => {
     }
   };
 
-  // const getAllContacts = async (params) => {
-  //   try {
-  //     const url = `https://contacthub-backend.onrender.com/api/contacts`;
-  //     const response = await axios({
-  //       method: "GET",
-  //       url,
-  //       headers: {
-  //         Authorization: `Bearer ${params}`,
-  //       },
-  //     });
+  const getApplicantdoctors = async () => {
+    try {
+      const url = "http://localhost:4000/api/doctor/applicant-doctors";
+      const response = await axios({
+        method: "GET",
+        url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-  //     setContactList(response.data);
-  //     return;
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     return 500;
-  //   }
-  // };
+      setApplicationList(response.data);
+      console.log(response.data);
+      return;
+    } catch (error) {
+      console.log(error.message);
+      return 500;
+    }
+  };
 
   // const addContact = async (values) => {
   //   try {
@@ -232,6 +233,7 @@ const GlobalMethodsProvider = ({ children }) => {
         Register,
         updateUserInfo,
         applyAsDoctor,
+        getApplicantdoctors,
         // updateUser,
         // addContact,
         // updateContact,
