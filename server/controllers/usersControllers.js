@@ -64,6 +64,7 @@ const updateUserInfo = async (req, res) => {
   try {
     const user = await Users.findById(req.params.id);
     const { name, email, gender, phone, age, address, password } = req.body;
+    console.log(user);
     if (user) {
       const isMatched = await Users.isPasswordMatched(email, password);
       if (isMatched) {
@@ -74,10 +75,12 @@ const updateUserInfo = async (req, res) => {
         user.age = age;
         user.address = address;
         await user.save();
-        res.status(200).json(user);
+        return res.status(200).json(user);
       } else {
-        res.status(401).json("Authetication failed!");
+        return res.status(401).json("Authentication failed!");
       }
+    } else {
+      return res.status(404).json("User not found!");
     }
   } catch (error) {
     res.status(500).send(error.message);

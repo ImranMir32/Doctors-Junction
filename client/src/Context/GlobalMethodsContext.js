@@ -144,6 +144,50 @@ const GlobalMethodsProvider = ({ children }) => {
     }
   };
 
+  const acceptDoctor = async (id) => {
+    try {
+      const url = `http://localhost:4000/api/doctor/accept-doctor/${id}`;
+      const response = await axios({
+        method: "PUT",
+        url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => {
+          // Return true if the status is within the 2xx range (successful)
+          // Return false if you want to treat certain status codes as errors
+          return status >= 200 && status <= 401; // Customize this condition as needed
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error.message);
+      return 500;
+    }
+  };
+
+  const rejectDoctor = async (id) => {
+    try {
+      const url = `http://localhost:4000/api/doctor/reject-doctor/${id}`;
+      const response = await axios({
+        method: "DELETE",
+        url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => {
+          // Return true if the status is within the 2xx range (successful)
+          // Return false if you want to treat certain status codes as errors
+          return status >= 200 && status <= 401; // Customize this condition as needed
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error.message);
+      return 500;
+    }
+  };
+
   // const addContact = async (values) => {
   //   try {
   //     const url = "https://contacthub-backend.onrender.com/api/contacts";
@@ -234,6 +278,8 @@ const GlobalMethodsProvider = ({ children }) => {
         updateUserInfo,
         applyAsDoctor,
         getApplicantdoctors,
+        acceptDoctor,
+        rejectDoctor,
         // updateUser,
         // addContact,
         // updateContact,

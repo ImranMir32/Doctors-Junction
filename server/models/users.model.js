@@ -34,6 +34,10 @@ const usersSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    status: {
+      type: String,
+      default: "pending",
+    },
     salt: {
       type: String,
     },
@@ -49,8 +53,10 @@ const usersSchema = mongoose.Schema(
 
 usersSchema.pre("save", function (next) {
   const user = this;
-  if (!user.isModified("password")) return;
-
+  if (!user.isModified("password")) {
+    next();
+    return;
+  }
   const salt = randomBytes(16).toString();
   const hashedPassword = createHmac("sha256", salt)
     .update(user.password)

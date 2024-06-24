@@ -25,6 +25,10 @@
   color: #fff;
 }
 
+.free-space {
+  margin: 100px;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .dashboard-nav a {

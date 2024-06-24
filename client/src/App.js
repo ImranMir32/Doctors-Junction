@@ -17,10 +17,12 @@ const Doctors = lazy(() => import("./routes/Doctors"));
 const ApplyDoctors = lazy(() => import("./routes/DoctorApply"));
 
 // admin
-const Dashboard = lazy(() => import("./routes/Admin/Dashboard"));
+const Dashboard = lazy(() => import("./routes/Dashboard"));
 // const AdminUsers = lazy(() => import("./routes/Admin/adminUsers"));
 // const AdminDoctors = lazy(() => import("./routes/Admin/adminDoctors"));
-const AdminApplicants = lazy(() => import("./routes/Admin/adminApplicants"));
+const AdminApplicants = lazy(() =>
+  import("./components/Admin/adminApplicants")
+);
 // const AdminAppointments = lazy(() =>
 //   import("./routes/Admin/adminAppointments")
 // );
