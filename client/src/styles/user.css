@@ -11,7 +11,9 @@
 .user-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
+  overflow-x: auto; /* This ensures horizontal scrolling if needed */
   margin-top: 1.5rem;
 }
 
@@ -22,7 +24,8 @@ h3 {
 
 table {
   width: 100%;
-  display: block;
+  max-width: 1200px;
+  margin: 0 auto;
   overflow-x: auto;
   white-space: nowrap;
 }

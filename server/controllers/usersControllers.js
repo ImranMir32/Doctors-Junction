@@ -1,4 +1,5 @@
 const Users = require("../models/users.model");
+const Doctors = require("../models/doctors.model");
 const cloudinary = require("../config/cloudinaryConfig");
 const fs = require("fs");
 
@@ -87,8 +88,36 @@ const updateUserInfo = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await Users.find()
+      .find({ _id: { $ne: req.locals } })
+      .select("-password");
+    return res.send(users);
+  } catch (error) {
+    res.status(500).send("Unable to get all users");
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const result = await Users.findByIdAndDelete(req.params.id);
+    const removeDoc = await Doctors.findOneAndDelete({
+      userId: req.params.id,
+    });
+    // const removeAppoint = await Appointment.findOneAndDelete({
+    //   userId: req.params.id,
+    // });
+    return res.send("User deleted successfully");
+  } catch (error) {
+    res.status(500).send("Unable to delete user");
+  }
+};
+
 module.exports = {
   userLogin,
   userRegister,
   updateUserInfo,
+  getAllUsers,
+  deleteUser,
 };

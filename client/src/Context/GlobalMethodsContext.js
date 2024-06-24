@@ -5,8 +5,15 @@ import axios from "axios";
 const GlobalMethodsContext = createContext();
 
 const GlobalMethodsProvider = ({ children }) => {
-  const { user, token, setToken, setUser, setApplicationList } =
-    useContext(GlobalStateContext);
+  const {
+    user,
+    token,
+    setToken,
+    setUser,
+    setApplicationList,
+    setUserList,
+    setDoctorList,
+  } = useContext(GlobalStateContext);
 
   // Load token and user data from local storage
   useEffect(() => {
@@ -188,81 +195,89 @@ const GlobalMethodsProvider = ({ children }) => {
     }
   };
 
-  // const addContact = async (values) => {
-  //   try {
-  //     const url = "https://contacthub-backend.onrender.com/api/contacts";
-  //     const response = await axios({
-  //       method: "POST",
-  //       url,
-  //       data: values,
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       validateStatus: (status) => {
-  //         // Return true if the status is within the 2xx range (successful)
-  //         // Return false if you want to treat certain status codes as errors
-  //         return status >= 200 && status <= 400; // Customize this condition as needed
-  //       },
-  //     });
+  const getUserList = async () => {
+    try {
+      const url = "http://localhost:4000/api/user/";
+      const response = await axios({
+        method: "GET",
+        url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-  //     await getAllContacts(token);
+      setUserList(response.data);
+      console.log(response.data);
+      return;
+    } catch (error) {
+      console.log(error.message);
+      return 500;
+    }
+  };
 
-  //     return response;
-  //   } catch (error) {
-  //     return error.message;
-  //   }
-  // };
+  const deleteUser = async (id) => {
+    try {
+      const url = `http://localhost:4000/api/user/${id}`;
+      const response = await axios({
+        method: "DELETE",
+        url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => {
+          // Return true if the status is within the 2xx range (successful)
+          // Return false if you want to treat certain status codes as errors
+          return status >= 200 && status <= 401; // Customize this condition as needed
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error.message);
+      return 500;
+    }
+  };
 
-  // const updateContact = async (param) => {
-  //   try {
-  //     const url = `https://contacthub-backend.onrender.com/api/contacts/${param.id}`;
-  //     const response = await axios({
-  //       method: "PUT",
-  //       url,
-  //       data: param.values,
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       validateStatus: (status) => {
-  //         // Return true if the status is within the 2xx range (successful)
-  //         // Return false if you want to treat certain status codes as errors
-  //         return status >= 200 && status <= 404; // Customize this condition as needed
-  //       },
-  //     });
+  const getDoctorList = async () => {
+    try {
+      const url = "http://localhost:4000/api/doctor/";
+      const response = await axios({
+        method: "GET",
+        url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-  //     await getAllContacts(token);
+      setDoctorList(response.data);
+      console.log(response.data);
+      return;
+    } catch (error) {
+      console.log(error.message);
+      return 500;
+    }
+  };
 
-  //     return response;
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     return error.message;
-  //   }
-  // };
-
-  // const deleteContact = async (param) => {
-  //   try {
-  //     const url = `https://contacthub-backend.onrender.com/api/contacts/${param}`;
-  //     const response = await axios({
-  //       method: "DELETE",
-  //       url,
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       validateStatus: (status) => {
-  //         // Return true if the status is within the 2xx range (successful)
-  //         // Return false if you want to treat certain status codes as errors
-  //         return status >= 200 && status <= 404; // Customize this condition as needed
-  //       },
-  //     });
-
-  //     await getAllContacts(token);
-
-  //     return response;
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     return error.message;
-  //   }
-  // };
+  const deleteDoctor = async (id) => {
+    try {
+      const url = `http://localhost:4000/api/doctor/${id}`;
+      const response = await axios({
+        method: "DELETE",
+        url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => {
+          // Return true if the status is within the 2xx range (successful)
+          // Return false if you want to treat certain status codes as errors
+          return status >= 200 && status <= 401; // Customize this condition as needed
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error.message);
+      return 500;
+    }
+  };
 
   const clearAllData = () => {
     setToken("");
@@ -280,10 +295,10 @@ const GlobalMethodsProvider = ({ children }) => {
         getApplicantdoctors,
         acceptDoctor,
         rejectDoctor,
-        // updateUser,
-        // addContact,
-        // updateContact,
-        // deleteContact,
+        getUserList,
+        deleteUser,
+        getDoctorList,
+        deleteDoctor,
       }}
     >
       {children}

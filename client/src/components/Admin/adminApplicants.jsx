@@ -1,6 +1,4 @@
 import React, { useEffect, useContext } from "react";
-// import ApplicantCard from "../../components/admin/ApplicantCard";
-// import "../../styles/admin/layout.css";
 import "../../styles/user.css";
 import { GlobalMethodsContext } from "../../Context/GlobalMethodsContext";
 import { GlobalStateContext } from "../../Context/Global_Context";

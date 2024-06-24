@@ -94,9 +94,48 @@ const rejectdoctor = async (req, res) => {
   }
 };
 
+const getAlldoctors = async (req, res) => {
+  try {
+    let docs;
+    if (!req.locals) {
+      docs = await Doctors.find({ isDoctor: true }).populate("userId");
+    } else {
+      docs = await Doctors.find({ isDoctor: true })
+        .find({
+          _id: { $ne: req.locals },
+        })
+        .populate("userId");
+    }
+
+    return res.send(docs);
+  } catch (error) {
+    res.status(500).send("Unable to get doctors");
+  }
+};
+
+const deleteDoctor = async (req, res) => {
+  try {
+    const result = await Users.findByIdAndUpdate(req.params.id, {
+      isDoctor: false,
+    });
+    const removeDoc = await Doctors.findOneAndDelete({
+      userId: req.params.id,
+    });
+    // const removeAppoint = await Appointment.findOneAndDelete({
+    //   userId: req.params.id,
+    // });
+    return res.send("Doctor deleted successfully");
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).send("Unable to delete doctor");
+  }
+};
+
 module.exports = {
   applyAsDoctor,
   getApplicantdoctors,
   acceptdoctor,
   rejectdoctor,
+  getAlldoctors,
+  deleteDoctor,
 };

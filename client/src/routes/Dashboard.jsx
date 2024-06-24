@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/admin/dashboard.css";
 import Navbar from "../components/Navbar";
-import AdminApplicants from "../components/Admin/adminApplicants"; // Ensure the correct import path
+import AdminApplicants from "../components/Admin/adminApplicants";
+import AdminUsers from "../components/Admin/adminUsers";
+import AdminDoctors from "../components/Admin/adminDoctors";
 
 const Dashboard = () => {
   const [page, setPage] = useState("Applications");
@@ -30,6 +32,8 @@ const Dashboard = () => {
         </nav>
       </div>
       {page === "Applications" && <AdminApplicants />}
+      {page === "Users" && <AdminUsers />}
+      {page === "Doctors" && <AdminDoctors />}
 
       <div className="free-space"></div>
     </>

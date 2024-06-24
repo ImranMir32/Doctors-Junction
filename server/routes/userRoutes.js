@@ -6,6 +6,8 @@ const {
   userRegister,
   userLogin,
   updateUserInfo,
+  getAllUsers,
+  deleteUser,
 } = require("../controllers/usersControllers");
 // const uploadSignin = multer().none(); when using form-data
 
@@ -26,6 +28,8 @@ const upload = multer({ storage: storage });
 router
   .post("/register", upload.single("image"), userRegister)
   .post("/login", userLogin)
-  .put("/:id", auth, updateUserInfo);
+  .put("/:id", auth, updateUserInfo)
+  .get("/", auth, getAllUsers)
+  .delete("/:id", auth, deleteUser);
 
 module.exports = router;
