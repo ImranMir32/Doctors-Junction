@@ -1,36 +1,106 @@
-// import React, { useState } from "react";
-// import AppointmentCard from "../components/AppointmentCard";
-// import "../../styles/admin/layout.css";
+import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
+import Loading from "./Loading";
+import "../../styles/user.css";
 
-// const adminAppointments = () => {
-//   const [appointments, setAppointments] = useState([
-//     { id: 1, doctor: "Dr. John Doe", user: "Alice", status: "Pending" },
-//     { id: 2, doctor: "Dr. Jane Smith", user: "Bob", status: "Pending" },
-//   ]);
+const AdminAppointments = () => {
+  const getAllAppoint = async (e) => {};
 
-//   const handleUpdateStatus = (id, status) => {
-//     setAppointments(
-//       appointments.map((appointment) =>
-//         appointment.id === id ? { ...appointment, status } : appointment
-//       )
-//     );
-//     // Add logic to update appointment status
-//   };
+  useEffect(() => {
+    getAllAppoint();
+  }, []);
 
-//   return (
-//     <div className="page">
-//       <h2>Appointments</h2>
-//       <div className="card-container">
-//         {appointments.map((appointment) => (
-//           <AppointmentCard
-//             key={appointment.id}
-//             appointment={appointment}
-//             onUpdateStatus={handleUpdateStatus}
-//           />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
+  const complete = async (ele) => {
+    try {
+      await toast.promise(
+        axios.put(
+          "/appointment/completed",
+          {
+            appointid: ele?._id,
+            doctorId: ele?.doctorId._id,
+            doctorname: `${ele?.userId?.firstname} ${ele?.userId?.lastname}`,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        ),
+        {
+          success: "Appointment booked successfully",
+          error: "Unable to book appointment",
+          loading: "Booking appointment...",
+        }
+      );
 
-// export default adminAppointments;
+      getAllAppoint();
+    } catch (error) {
+      return error;
+    }
+  };
+
+  return (
+    <>
+      <section className="user-section">
+        <h3 className="home-sub-heading">All Users</h3>
+        {appointments.length > 0 ? (
+          <div className="user-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Doctor</th>
+                  <th>Patient</th>
+                  <th>Appointment Date</th>
+                  <th>Appointment Time</th>
+                  <th>Booking Date</th>
+                  <th>Booking Time</th>
+                  <th>Status</th>
+
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {appointments?.map((ele, i) => {
+                  return (
+                    <tr key={ele?._id}>
+                      <td>{i + 1}</td>
+                      <td>
+                        {ele?.doctorId?.firstname +
+                          " " +
+                          ele?.doctorId?.lastname}
+                      </td>
+                      <td>
+                        {ele?.userId?.firstname + " " + ele?.userId?.lastname}
+                      </td>
+                      <td>{ele?.date}</td>
+                      <td>{ele?.time}</td>
+                      <td>{ele?.createdAt.split("T")[0]}</td>
+                      <td>{ele?.updatedAt.split("T")[1].split(".")[0]}</td>
+                      <td>{ele?.status}</td>
+                      <td>
+                        <button
+                          className={`btn user-btn accept-btn ${
+                            ele?.status === "Completed" ? "disable-btn" : ""
+                          }`}
+                          disabled={ele?.status === "Completed"}
+                          onClick={() => complete(ele)}
+                        >
+                          Complete
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p>No Doctors</p>
+        )}
+      </section>
+    </>
+  );
+};
+
+export default AdminAppointments;

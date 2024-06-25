@@ -1,35 +1,32 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import DoctorCard from "../components/DoctorCard";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import "../styles/doctors.css";
 
-const mockDoctors = [
-  {
-    _id: "1",
-    name: "Dr. John Doe",
-    specialization: "Cardiologist",
-    experience: "10 years",
-    photo: "doctor1.jpg", // Assuming you have images in your public folder
-  },
-  {
-    _id: "2",
-    name: "Dr. Jane Smith",
-    specialization: "Neurologist",
-    experience: "8 years",
-    photo: "doctor2.jpg",
-  },
-  {
-    _id: "3",
-    name: "Dr. Emily Johnson",
-    specialization: "Pediatrician",
-    experience: "5 years",
-    photo: "doctor3.jpg",
-  },
-];
+import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
+import { GlobalStateContext } from "../Context/Global_Context";
 
 const Doctors = () => {
-  const doctors = mockDoctors;
+  const { getDoctorList } = useContext(GlobalMethodsContext);
+  const { doctorList } = useContext(GlobalStateContext);
+
+  const getAllDoc = async () => {
+    try {
+      await getDoctorList();
+    } catch (error) {
+      console.error("Error fetching applicants:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getAllDoc();
+    };
+
+    fetchData(); // Immediately invoke the fetchData function
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array ensures useEffect runs only once on component mount
 
   return (
     <>
@@ -37,7 +34,7 @@ const Doctors = () => {
       <section className="container doctors">
         <h2 className="page-heading">Our Doctors</h2>
         <div className="doctors-card-container">
-          {doctors.map((ele) => {
+          {doctorList.map((ele) => {
             return <DoctorCard ele={ele} key={ele._id} />;
           })}
         </div>
