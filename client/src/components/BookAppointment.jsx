@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import "../styles/bookappointment.css";
-// import axios from "axios";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
 import { GlobalMethodsContext } from "../Context/GlobalMethodsContext";
 
@@ -27,9 +26,16 @@ const BookAppointment = ({ setModalOpen, ele }) => {
         doctorId: ele?.userId?._id,
         date: formDetails.date,
         time: formDetails.time,
-        doctorname: `${ele?.userId?.firstname} ${ele?.userId?.lastname}`,
+        doctorname: `${ele?.userId?.name}`,
       };
-      await bookAnAppointment(value);
+      const res = await bookAnAppointment(value);
+      if (res.status === 201) {
+        toast.success(`${res.data.msg}`);
+      } else if (res.status === 400) {
+        toast.warning(`${res.data}`);
+      } else {
+        toast.warning(`Network response was not ok`);
+      }
       setModalOpen(false);
     } catch (error) {
       return error;

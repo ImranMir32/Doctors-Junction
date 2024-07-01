@@ -1,5 +1,7 @@
 const Doctors = require("../models/doctors.model");
 const Users = require("../models/users.model");
+const Appointments = require("../models/appointments.model");
+const Notifications = require("../models/notifications.model");
 
 const getApplicantdoctors = async (req, res) => {
   try {
@@ -60,12 +62,12 @@ const acceptdoctor = async (req, res) => {
       { isDoctor: true }
     );
 
-    // const notification = await Notification({
-    //   userId: req.params.id,
-    //   content: `Congratulations, Your application has been accepted.`,
-    // });
+    const notification = await Notifications({
+      userId: req.params.id,
+      content: `Congratulations, Your application has been accepted.`,
+    });
 
-    // await notification.save();
+    await notification.save();
     console.log("accpted");
     return res.status(201).send("Application accepted notification sent");
   } catch (error) {
@@ -81,12 +83,12 @@ const rejectdoctor = async (req, res) => {
     );
     const delDoc = await Doctors.findOneAndDelete({ userId: req.params.id });
 
-    // const notification = await Notification({
-    //   userId:  req.params.id,
-    //   content: `Sorry, Your application has been rejected.`,
-    // });
+    const notification = await Notifications({
+      userId: req.params.id,
+      content: `Sorry, Your application has been rejected.`,
+    });
 
-    // await notification.save();
+    await notification.save();
 
     return res.status(201).send("Application rejection notification sent");
   } catch (error) {
@@ -121,9 +123,9 @@ const deleteDoctor = async (req, res) => {
     const removeDoc = await Doctors.findOneAndDelete({
       userId: req.params.id,
     });
-    // const removeAppoint = await Appointment.findOneAndDelete({
-    //   userId: req.params.id,
-    // });
+    const removeAppoint = await Appointments.findOneAndDelete({
+      userId: req.params.id,
+    });
     return res.send("Doctor deleted successfully");
   } catch (error) {
     console.log("error", error);

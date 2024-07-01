@@ -1,5 +1,6 @@
 const Users = require("../models/users.model");
 const Doctors = require("../models/doctors.model");
+const Appointments = require("../models/appointments.model");
 const cloudinary = require("../config/cloudinaryConfig");
 const fs = require("fs");
 
@@ -105,9 +106,9 @@ const deleteUser = async (req, res) => {
     const removeDoc = await Doctors.findOneAndDelete({
       userId: req.params.id,
     });
-    // const removeAppoint = await Appointment.findOneAndDelete({
-    //   userId: req.params.id,
-    // });
+    const removeAppoint = await Appointments.findOneAndDelete({
+      userId: req.params.id,
+    });
     return res.send("User deleted successfully");
   } catch (error) {
     res.status(500).send("Unable to delete user");

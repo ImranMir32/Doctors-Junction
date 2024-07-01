@@ -12,12 +12,23 @@ const GlobalStateProvider = ({ children }) => {
   const initialReload = JSON.parse(localStorage.getItem("reload")) || false;
   const initialApplicationList =
     JSON.parse(localStorage.getItem("applicationList")) || [];
+  const initialPerosonalAppoinmentList =
+    JSON.parse(localStorage.getItem("perosonalAppoinmentList")) || [];
+  const initialNotificationtList =
+    JSON.parse(localStorage.getItem("notificationtList")) || [];
 
   const [token, setToken] = useState(initialToken);
   const [user, setUser] = useState(initialUser);
   const [doctorList, setDoctorList] = useState(initialDoctorList);
   const [userList, setUserList] = useState(initialUserList);
   const [reload, setReload] = useState(initialReload);
+  const [notificationtList, setNotificationtList] = useState(
+    initialNotificationtList
+  );
+  const [perosonalAppoinmentList, setPerosonalAppoinmentList] = useState(
+    initialPerosonalAppoinmentList
+  );
+
   const [applicationList, setApplicationList] = useState(
     initialApplicationList
   );
@@ -47,6 +58,20 @@ const GlobalStateProvider = ({ children }) => {
     localStorage.setItem("applicationList", JSON.stringify(applicationList));
   }, [applicationList]);
 
+  useEffect(() => {
+    localStorage.setItem(
+      "perosonalAppoinmentList",
+      JSON.stringify(perosonalAppoinmentList)
+    );
+  }, [perosonalAppoinmentList]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "notificationtList",
+      JSON.stringify(notificationtList)
+    );
+  }, [notificationtList]);
+
   return (
     <GlobalStateContext.Provider
       value={{
@@ -56,12 +81,16 @@ const GlobalStateProvider = ({ children }) => {
         reload,
         applicationList,
         userList,
+        perosonalAppoinmentList,
+        notificationtList,
         setUser,
         setToken,
         setDoctorList,
         setReload,
         setApplicationList,
         setUserList,
+        setPerosonalAppoinmentList,
+        setNotificationtList,
       }}
     >
       {children}

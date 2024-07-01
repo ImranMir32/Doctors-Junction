@@ -15,17 +15,14 @@ const Home = lazy(() => import("./routes/Home"));
 const Profile = lazy(() => import("./routes/Profile"));
 const Doctors = lazy(() => import("./routes/Doctors"));
 const ApplyDoctors = lazy(() => import("./routes/DoctorApply"));
+const Appointments = lazy(() => import("./routes/Appointments"));
+const Notifications = lazy(() => import("./routes/Notifications"));
 
 // admin
 const Dashboard = lazy(() => import("./routes/Dashboard"));
-// const AdminUsers = lazy(() => import("./routes/Admin/adminUsers"));
-// const AdminDoctors = lazy(() => import("./routes/Admin/adminDoctors"));
 const AdminApplicants = lazy(() =>
   import("./components/Admin/adminApplicants")
 );
-// const AdminAppointments = lazy(() =>
-//   import("./routes/Admin/adminAppointments")
-// );
 
 const router = createBrowserRouter([
   {
@@ -58,6 +55,16 @@ const router = createBrowserRouter([
     element: <ApplyDoctors />,
     errorElement: <ErrorPage />,
   },
+  {
+    path: "/appointments",
+    element: <Appointments />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/notifications",
+    element: <Notifications />,
+    errorElement: <ErrorPage />,
+  },
 
   {
     path: "/dashboard",
@@ -65,21 +72,6 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
 
-  // {
-  //   path: "/dashboard/users",
-  //   element: <AdminUsers />,
-  //   errorElement: <ErrorPage />,
-  // },
-  // {
-  //   path: "/dashboard/doctors",
-  //   element: <AdminDoctors />,
-  //   errorElement: <ErrorPage />,
-  // },
-  // {
-  //   path: "/dashboard/appointments",
-  //   element: <AdminAppointments />,
-  //   errorElement: <ErrorPage />,
-  // },
   {
     path: "/dashboard/applications",
     element: <AdminApplicants />,

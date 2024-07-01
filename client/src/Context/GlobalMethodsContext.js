@@ -13,6 +13,8 @@ const GlobalMethodsProvider = ({ children }) => {
     setApplicationList,
     setUserList,
     setDoctorList,
+    setPerosonalAppoinmentList,
+    setNotificationtList,
   } = useContext(GlobalStateContext);
 
   // Load token and user data from local storage
@@ -279,6 +281,68 @@ const GlobalMethodsProvider = ({ children }) => {
     }
   };
 
+  const bookAnAppointment = async (value) => {
+    try {
+      const url = "http://localhost:4000/api/appointment/";
+      const response = await axios({
+        method: "POST",
+        url,
+        data: value,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log(response);
+      // const params = response.data.access_token;
+      // await getAllContacts(params);
+      return response;
+    } catch (error) {
+      return 401;
+    }
+  };
+
+  const getAllperosonalAppoinment = async () => {
+    try {
+      console.log(user._id);
+      const url = `http://localhost:4000/api/appointment/${user._id}`;
+      const response = await axios({
+        method: "GET",
+        url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setPerosonalAppoinmentList(response.data);
+      console.log(response.data);
+      return;
+    } catch (error) {
+      console.log(error.message);
+      return 500;
+    }
+  };
+
+  const getAllNotifications = async () => {
+    try {
+      const url = `http://localhost:4000/api/notifications`;
+      const response = await axios({
+        method: "GET",
+        url,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setNotificationtList(response.data);
+      console.log(response.data);
+      return;
+    } catch (error) {
+      console.log(error.message);
+      return 500;
+    }
+  };
+
   const clearAllData = () => {
     setToken("");
     setUser("");
@@ -299,6 +363,9 @@ const GlobalMethodsProvider = ({ children }) => {
         deleteUser,
         getDoctorList,
         deleteDoctor,
+        bookAnAppointment,
+        getAllperosonalAppoinment,
+        getAllNotifications,
       }}
     >
       {children}
